@@ -1,0 +1,6 @@
+{
+  "manifest_version": 2,
+  "name": "Social Media Blocker",
+  "description": "Extension that blocks social media to increase productivity",
+  "version": "1.0"
+}
