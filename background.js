@@ -1,9 +1,13 @@
 chrome.runtime.onInstalled.addListener(function() {
-  console.log("running");
+  console.log("Installed on updated or new browsers");
 });
 
+const urlFilters = [{urlMatches: 'https://www.facebook.com/'}, {urlMatches: 'https://www.linkedin.com/'}];
 chrome.webNavigation.onCompleted.addListener(function
   (details) {
-  var bkg = chrome.extension.getBackgroundPage();
-  bkg.console.log(details.url);
-}, {url: [{urlMatches : 'https://www.facebook.com/'}]});
+    // Get current time, count hours till 7pm
+    // if >7pm and < 7am allow, else close
+
+    alert("You're not supposed to be on social media at this hour! Closing this tab.");
+    chrome.tabs.remove(details.tabId);
+}, {url: urlFilters});
