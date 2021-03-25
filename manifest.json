@@ -9,12 +9,16 @@
   },
   "background": {
     "persistent": false,
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js",
+      "backgroundEmail.js"
+    ]
   },
   "permissions": [
     "activeTab",
     "webNavigation",
     "tabs",
-    "http://worldtimeapi.org/*"
+    "http://worldtimeapi.org/*",
+    "storage"
   ]
 }
