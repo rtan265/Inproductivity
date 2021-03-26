@@ -27,21 +27,10 @@ async function setIsAllowedToFalse() {
   })
 }
 
-async function setIsAllowedToTrue() {
+async function resetToDefault() {
   return new Promise((resolve, reject) => {
     try {
-      STORAGE.set({"isAllowed": true, "counter": 0}, function() {})
-    }
-    catch (ex) {
-      reject(ex);
-    }
-  })
-}
-
-async function setNewStartTime() {
-  return new Promise((resolve, reject) => {
-    try {
-      STORAGE.set({"startTime": Date.now()}, function() {})
+      STORAGE.set({"isAllowed": true, "counter": 0, "startTime": Date.now()}, function() {})
     }
     catch (ex) {
       reject(ex);
@@ -69,7 +58,7 @@ async function onInitialization() {
       let data = {};
       data["counter"] = 0;
       data["startTime"] = Date.now();
-      data["isAllowed"] = true;
+      data["isAllowed"] = false;
 
       STORAGE.set(data, function() {
       })
@@ -91,24 +80,18 @@ chrome.webNavigation.onCompleted.addListener(async function(details) {
 
   if (data.isAllowed === false){
     if (timeDifference >= COOLDOWNTIME){
-      await setIsAllowedToTrue();
+      await resetToDefault();
     } else {
       alert("Checking emails too often - focus on your task!");
       chrome.tabs.remove(details.tabId);
     }
   } 
 
-  console.log(timeDifference < COOLDOWNTIME);
-  
-  if (data.counter > 10){
-    await setNewStartTime();
+  if (data.counter > 10){    
     if (timeDifference < COOLDOWNTIME) {
       await setIsAllowedToFalse();
     }
   } else {
     await incrementCounter(data.counter + 1);
   }
-
-
-
 }, {url: mailUrlFilters});
