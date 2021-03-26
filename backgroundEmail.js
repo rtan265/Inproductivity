@@ -2,6 +2,7 @@ const mailUrlFilters = [{urlMatches: 'https://mail.*'}];
 const STORAGE = chrome.storage.local;
 const COOLDOWNTIME = 900000;
 const TESTCOOLDOWN = 2000;
+const DEFAULTDATA = { "counter": 0, "isAllowed": true, "startTime": Date.now() };
 
 async function getDataFromLocalStorage() {
   return new Promise((resolve, reject) => {
@@ -30,7 +31,7 @@ async function setIsAllowedToFalse() {
 async function resetToDefault() {
   return new Promise((resolve, reject) => {
     try {
-      STORAGE.set({"isAllowed": true, "counter": 0, "startTime": Date.now()}, function() {})
+      STORAGE.set({ DEFAULTDATA }, function() {})
     }
     catch (ex) {
       reject(ex);
@@ -55,12 +56,7 @@ async function onInitialization() {
       STORAGE.clear(function() {
       })
 
-      let data = {};
-      data["counter"] = 0;
-      data["startTime"] = Date.now();
-      data["isAllowed"] = false;
-
-      STORAGE.set(data, function() {
+      STORAGE.set(DEFAULTDATA, function() {
       })
     }
     catch (ex) {
@@ -76,8 +72,8 @@ chrome.runtime.onInstalled.addListener(function() {
 chrome.webNavigation.onCompleted.addListener(async function(details) {
   const data = await getDataFromLocalStorage();
   const timeDifference = Date.now() - data.startTime;
-  console.log(data);
 
+  
   if (data.isAllowed === false){
     if (timeDifference >= COOLDOWNTIME){
       await resetToDefault();
