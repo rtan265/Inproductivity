@@ -16,9 +16,9 @@
   },
   "permissions": [
     "activeTab",
-    "webNavigation",
+    "storage",
     "tabs",
-    "http://worldtimeapi.org/*",
-    "storage"
+    "webNavigation",
+    "http://worldtimeapi.org/*"
   ]
 }
