@@ -1,4 +1,4 @@
-var goalLink;
+var goalLink = "https://trello.com/b/W2wIXDdD/weekly-planning-board";
 
 const urlFilters = [
   {urlMatches: 'https://www.facebook.com/*'}, 
@@ -8,7 +8,7 @@ const urlFilters = [
 
 chrome.runtime.onInstalled.addListener(function() {
   console.log("Installed background.js on updated or new browsers");
-  goalLink = prompt("Please enter your goal website:");
+  // goalLink = prompt("Please enter your goal website:");
 
 });
 
